@@ -28,22 +28,25 @@ class Ball(GameSprite):
         pass
 
 class Player1(GameSprite):
-    def update():
+    def update(self):
         keys_pressed = key.get_pressed()
         if keys_pressed[K_w] and self.rect.y > 0:
-            self.rect.y -= speed
-        elif keys_pressed[K_s] and self.rect.y > 400:
-            self.rect.y += speed
+            self.rect.y -= self.speed
+        elif keys_pressed[K_s] and self.rect.y < 320:
+            self.rect.y += self.speed
 
 class Player2(GameSprite):
-    def update():
+    def update(self):
         keys_pressed = key.get_pressed()
-        # if keys_pressed[K_]
+        if keys_pressed[K_UP] and self.rect.y > 0:
+            self.rect.y -= self.speed
+        elif keys_pressed[K_DOWN] and self.rect.y < 320:
+            self.rect.y += self.speed
 
 ball = Ball("ball.png", 330, 230, 40, 40, 5)
 
-player_1 = Player1("paddle.png", -10, 10, 150, 180, 5)
-player_2 = Player2("paddle.png", 555, 310, 150, 180, 5)
+player_1 = Player1("paddle.png", -10, 10, 150, 180, 7)
+player_2 = Player2("paddle.png", 555, 310, 150, 180, 7)
 
 game = True
 while game:
@@ -68,6 +71,7 @@ while game:
 
     # update the sprites
     player_1.update()
+    player_2.update()
     
     # always update the screen
     display.update()
