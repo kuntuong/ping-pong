@@ -41,7 +41,7 @@ class Player1(GameSprite):
         keys_pressed = key.get_pressed()
         if keys_pressed[K_w] and self.rect.y > 0:
             self.rect.y -= self.speed
-        elif keys_pressed[K_s] and self.rect.y < 320:
+        elif keys_pressed[K_s] and self.rect.y < 350:
             self.rect.y += self.speed
 
 class Player2(GameSprite):
@@ -49,13 +49,13 @@ class Player2(GameSprite):
         keys_pressed = key.get_pressed()
         if keys_pressed[K_UP] and self.rect.y > 0:
             self.rect.y -= self.speed
-        elif keys_pressed[K_DOWN] and self.rect.y < 320:
+        elif keys_pressed[K_DOWN] and self.rect.y < 350:
             self.rect.y += self.speed
 
 ball = Ball("ball.png", 330, 230, 40, 40, 5)
 
-player_1 = Player1("paddle.png", -10, 10, 150, 180, 7)
-player_2 = Player2("paddle.png", 555, 310, 150, 180, 7)
+player_1 = Player1("paddle.png", 30, 10, 50, 150, 7)
+player_2 = Player2("paddle.png", 620, 310, 50, 150, 7)
 
 game = True
 while game:
@@ -84,8 +84,9 @@ while game:
     
     ball.update()
 
+    # detect the collision between the paddles and the ball
     if sprite.collide_rect(player_1, ball) or sprite.collide_rect(player_2, ball):
         ball.speedx *= -1
-
+    
     # always update the screen
     display.update()
