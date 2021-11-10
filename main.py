@@ -9,6 +9,7 @@ font.init()
 # initialize the clock class
 clock = time.Clock()
 
+# transform.scale the background to the program
 background = transform.scale(image.load("background.jpg"), (700, 500))
 
 class GameSprite(sprite.Sprite):
@@ -41,6 +42,9 @@ while game:
         # quit the game
         if e.type == QUIT:
             game = False
+
+    # render the background
+    window.blit(background, (0, 0))
 
     # always update the screen
     display.update()
