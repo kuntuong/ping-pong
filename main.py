@@ -1,4 +1,5 @@
 from pygame import *
+from random import randint
 
 window = display.set_mode((700, 500))
 display.set_caption("Ping Pong")
@@ -16,17 +17,25 @@ class GameSprite(sprite.Sprite):
     def __init__(self, img, x, y, width, height, speed):
         super().__init__()
         self.image = transform.scale(image.load(img), (width, height))
+        self.speedx = 2
+        self.speedy = 2
         self.speed = speed
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+        self.way_ball = randint(1, 4) 
     def blit_image(self):
         window.blit(self.image, (self.rect.x, self.rect.y))
 
 class Ball(GameSprite):
-    def update():
-        pass
+    def update(self):
+        self.rect.x += self.speedx
+        self.rect.y += self.speedy
 
+        if self.rect.y < 1:
+            self.speedy *= -1
+        elif self.rect.y > 480:
+            self.speedy *= -1
 class Player1(GameSprite):
     def update(self):
         keys_pressed = key.get_pressed()
@@ -73,5 +82,10 @@ while game:
     player_1.update()
     player_2.update()
     
+    ball.update()
+
+    if sprite.collide_rect(player_1, ball) or sprite.collide_rect(player_2, ball):
+        ball.speedx *= -1
+
     # always update the screen
     display.update()
