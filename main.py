@@ -11,7 +11,7 @@ while game:
     # call the keys pressed and FPS times
     keys_pressed = key.get_pressed()
     clock.tick(60)
-
+    print("hello")
     for e in event.get():
         # gives the player option to 
         # quit the game
