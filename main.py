@@ -31,6 +31,11 @@ class Paddle(GameSprite):
     def update():
         pass
 
+ball = Ball("ball.png", 330, 230, 40, 40, 5)
+
+player_1 = Ball("paddle.png", -10, 10, 150, 180, 5)
+player_2 = Ball("paddle.png", 555, 310, 150, 180, 5)
+
 game = True
 while game:
     # call the keys pressed and FPS times
@@ -45,6 +50,12 @@ while game:
 
     # render the background
     window.blit(background, (0, 0))
+
+    # render the sprites
+    ball.blit_image()
+
+    player_1.blit_image()
+    player_2.blit_image()
 
     # always update the screen
     display.update()
