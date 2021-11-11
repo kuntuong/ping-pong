@@ -4,6 +4,7 @@ from random import randint
 window = display.set_mode((700, 500))
 display.set_caption("Ping Pong")
 
+mixer.init()
 # initialize the font class
 font.init()
 
@@ -46,10 +47,13 @@ class Ball(GameSprite):
         self.rect.x += self.speedx
         self.rect.y += self.speedy
 
+        wall_hit = mixer.Sound("sounds/wall_hit.wav")
         if self.rect.y < 1:
             self.speedy *= -1
+            mixer.Sound.play(wall_hit)
         elif self.rect.y > 480:
             self.speedy *= -1
+            mixer.Sound.play(wall_hit)
 
 class Player1(GameSprite):
     def update(self):
@@ -76,6 +80,9 @@ player1_score = 0
 player2_score = 0
 
 state = "start"
+
+paddle_hit = mixer.Sound("sounds/paddle_hit.wav")
+score = mixer.Sound("sounds/score.wav")
 
 # finish = False
 won = 1
@@ -134,14 +141,15 @@ while game:
         # detect the collision between the paddles and the ball
         if sprite.collide_rect(player_1, ball) or sprite.collide_rect(player_2, ball):
             ball.speedx *= -1
+            mixer.Sound.play(paddle_hit)
 
-        if ball.rect.x < 1: 
+        if ball.rect.x < 1:   
             won = 2
-
+            mixer.Sound.play(score)
             state = "gameover"
         elif ball.rect.x > 660:
             won = 1
-
+            mixer.Sound.play(score)
             state = "gameover"
     
     elif state == "gameover":
