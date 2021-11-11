@@ -9,6 +9,7 @@ font.init()
 
 font_1 = font.Font(None, 80)
 font_2 = font.Font(None, 50)
+font_3 = font.Font(None, 65)
 
 # initialize the clock class
 clock = time.Clock()
@@ -74,7 +75,10 @@ player_2 = Player2("paddle.png", 620, randint(10, 350), 50, 150, 7)
 player1_score = 0
 player2_score = 0
 
-finish = False
+state = "start"
+
+# finish = False
+won = 1
 game = True
 while game:
     # call the keys pressed and FPS times
@@ -87,7 +91,26 @@ while game:
         if e.type == QUIT:
             game = False
             
-    if finish != True:
+    if state == "start":
+        window.blit(background, (0, 0))
+        start_txt = font_1.render("Ping Pong", 1, (255, 255, 255))
+        window.blit(start_txt, (220, 130))
+
+        multi_txt = font_3.render("Press ENTER for Multiplayer", 1, (255, 255, 255))
+        window.blit(multi_txt, (45, 225))
+
+        multi_txt = font_3.render("Press SPACE for Singleplayer", 1, (255, 255, 255))
+        window.blit(multi_txt, (35, 310))
+
+        if keys_pressed[K_SPACE]:
+            state = "singleplayer"
+
+            ball = Ball("ball.png", 330, 230, 40, 40, 5)
+
+            player_1 = Player1("paddle.png", 30, randint(10, 350), 50, 150, 7)
+            player_2 = Player2("paddle.png", 620, randint(10, 350), 50, 150, 7)
+
+    elif state == "singleplayer":
         # render the background
         window.blit(background, (0, 0))
 
@@ -113,30 +136,29 @@ while game:
             ball.speedx *= -1
 
         if ball.rect.x < 1: 
-            player2_score += 1
-            # window.blit(player2_scoretxt, (390, 80))
+            won = 2
 
-            player2_wins = font_1.render("Player 2 Wins", 1, (255, 255, 255))
-            window.blit(player2_wins, (170, 210))
-
-            finish = True
+            state = "gameover"
         elif ball.rect.x > 660:
-            player1_score += 1
-            # window.blit(player1_scoretxt, (290, 80))
+            won = 1
 
-            player1_wins = font_1.render("Player 1 Wins", 1, (255, 255, 255))
-            window.blit(player1_wins, (170, 210))
-
-            finish = True
+            state = "gameover"
     
-    if finish == True:
+    elif state == "gameover":
+        window.blit(background, (0, 0))
+
+        if won == 1:
+            player1_wins = font_1.render("Player 1 Wins", 1, (255, 255, 255))
+            window.blit(player1_wins, (170, 180))
+        elif won == 2:
+            player2_wins = font_1.render("Player 2 Wins", 1, (255, 255, 255))
+            window.blit(player2_wins, (170, 180))
+
+        press_enter = font_1.render("Press Enter", 1, (255, 255, 255))
+        window.blit(press_enter, (200, 270))
+        
         if keys_pressed[K_RETURN]:
-            finish = False
-
-            ball = Ball("ball.png", 330, 230, 40, 40, 5)
-
-            player_1 = Player1("paddle.png", 30, randint(10, 350), 50, 150, 7)
-            player_2 = Player2("paddle.png", 620, randint(10, 350), 50, 150, 7)
+            state = "start"
 
 
     # always update the screen
