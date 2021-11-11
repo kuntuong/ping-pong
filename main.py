@@ -114,7 +114,7 @@ while game:
 
         if ball.rect.x < 1: 
             player2_score += 1
-            window.blit(player2_scoretxt, (390, 80))
+            # window.blit(player2_scoretxt, (390, 80))
 
             player2_wins = font_1.render("Player 2 Wins", 1, (255, 255, 255))
             window.blit(player2_wins, (170, 210))
@@ -122,7 +122,7 @@ while game:
             finish = True
         elif ball.rect.x > 660:
             player1_score += 1
-            window.blit(player1_scoretxt, (290, 80))
+            # window.blit(player1_scoretxt, (290, 80))
 
             player1_wins = font_1.render("Player 1 Wins", 1, (255, 255, 255))
             window.blit(player1_wins, (170, 210))
