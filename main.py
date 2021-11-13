@@ -12,6 +12,7 @@ font.init()
 font_1 = font.Font("font.ttf", 80)
 font_2 = font.Font("font.ttf", 50)
 font_3 = font.Font("font.ttf", 65)
+font_4 = font.Font("font.ttf", 45)
 
 # initialize the clock class
 clock = time.Clock()
@@ -27,14 +28,14 @@ class GameSprite(sprite.Sprite):
         ran1 = randint(1, 2)
         ran2 = randint(1, 2)
         if ran1 == 1:
-            self.speedx = 2
+            self.speedx = 4
         else:
-            self.speedx = -2
+            self.speedx = -4
         
         if ran2 == 1:
-            self.speedy = 2
+            self.speedy = 4
         else:
-            self.speedy = -2
+            self.speedy = -4
         
         self.speed = speed
         self.rect = self.image.get_rect()
@@ -110,13 +111,13 @@ while game:
     if state == "start":
         window.blit(black_background, (0, 0))
         start_txt = font_1.render("Ping Pong", 1, (255, 255, 255))
-        window.blit(start_txt, (220, 130))
+        window.blit(start_txt, (170, 130))
 
-        multi_txt = font_3.render("Press ENTER for Multiplayer", 1, (255, 255, 255))
-        window.blit(multi_txt, (45, 225))
+        multi_txt = font_4.render("Press ENTER for Multiplayer", 1, (255, 255, 255))
+        window.blit(multi_txt, (27, 230))
 
-        multi_txt = font_3.render("Press SPACE for Singleplayer", 1, (255, 255, 255))
-        window.blit(multi_txt, (35, 310))
+        multi_txt = font_4.render("Press SPACE for Singleplayer", 1, (255, 255, 255))
+        window.blit(multi_txt, (15, 300))
 
         if keys_pressed[K_RETURN]:
             state = "multiplayer"
