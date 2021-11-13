@@ -27,15 +27,16 @@ class GameSprite(sprite.Sprite):
         self.image = transform.scale(image.load(img), (width, height))
         ran1 = randint(1, 2)
         ran2 = randint(1, 2)
+        self.ball_speed = 4
         if ran1 == 1:
-            self.speedx = 4
+            self.speedx = self.ball_speed
         else:
-            self.speedx = -4
+            self.speedx = -self.ball_speed
         
         if ran2 == 1:
-            self.speedy = 4
+            self.speedy = self.ball_speed
         else:
-            self.speedy = -4
+            self.speedy = -self.ball_speed
         
         self.speed = speed
         self.rect = self.image.get_rect()
@@ -91,6 +92,7 @@ state = "start"
 paddle_hit = mixer.Sound("sounds/paddle_hit.wav")
 score = mixer.Sound("sounds/score.wav")
 
+singleplayer_point = 0
 # finish = False
 won = 1
 game = True
@@ -113,13 +115,13 @@ while game:
         start_txt = font_1.render("Ping Pong", 1, (255, 255, 255))
         window.blit(start_txt, (170, 130))
 
-        multi_txt = font_4.render("Press ENTER for Multiplayer", 1, (255, 255, 255))
+        multi_txt = font_4.render("Press A for Multiplayer", 1, (255, 255, 255))
         window.blit(multi_txt, (27, 230))
 
         multi_txt = font_4.render("Press SPACE for Singleplayer", 1, (255, 255, 255))
         window.blit(multi_txt, (15, 300))
 
-        if keys_pressed[K_RETURN]:
+        if keys_pressed[K_a]:
             state = "multiplayer"
 
             ball = Ball("ball.png", 330, 230, 40, 40, 5)
@@ -183,7 +185,11 @@ while game:
         player_bot.rect.y = ball.rect.y - 70
 
         # detect the collision between the paddles and the ball
-        if sprite.collide_rect(player_bot, ball) or sprite.collide_rect(player_2, ball):
+        if sprite.collide_rect(player_bot, ball):
+            ball.speedx *= -1
+            mixer.Sound.play(paddle_hit)
+            singleplayer_point += 1
+        if sprite.collide_rect(player_2, ball):
             ball.speedx *= -1
             mixer.Sound.play(paddle_hit)
 
@@ -206,8 +212,11 @@ while game:
             player2_wins = font_1.render("Player 2 Wins", 1, (255, 255, 255))
             window.blit(player2_wins, (90, 180))
         elif won == 3:
-            player2_wins = font_1.render("You Lost!", 1, (255, 255, 255))
-            window.blit(player2_wins, (180, 180))
+            player2_wins = font_1.render("Game Over", 1, (255, 255, 255))
+            window.blit(player2_wins, (150, 120))
+
+            player2_wins = font_1.render("Score: " + str(singleplayer_point), 1, (255, 255, 255))
+            window.blit(player2_wins, (180, 190))
         elif won == 4:
             player2_wins = font_1.render("You Won!", 1, (255, 255, 255))
             window.blit(player2_wins, (180, 180))
