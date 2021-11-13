@@ -5,6 +5,7 @@ window = display.set_mode((700, 500))
 display.set_caption("Ping Pong")
 
 mixer.init()
+
 # initialize the font class
 font.init()
 
@@ -71,6 +72,10 @@ class Player2(GameSprite):
         elif keys_pressed[K_DOWN] and self.rect.y < 350:
             self.rect.y += self.speed
 
+class Bot(GameSprite):
+    def update(self):
+        pass
+
 ball = Ball("ball.png", 330, 230, 40, 40, 5)
 
 player_1 = Player1("paddle.png", 30, randint(10, 350), 50, 150, 7)
@@ -97,6 +102,9 @@ while game:
         # quit the game
         if e.type == QUIT:
             game = False
+        # if e.type == USEREVENT: 
+        #     ball.speedx += 1
+        #     ball.speedy += 1
             
     if state == "start":
         window.blit(background, (0, 0))
@@ -109,15 +117,22 @@ while game:
         multi_txt = font_3.render("Press SPACE for Singleplayer", 1, (255, 255, 255))
         window.blit(multi_txt, (35, 310))
 
-        if keys_pressed[K_SPACE]:
-            state = "singleplayer"
+        if keys_pressed[K_RETURN]:
+            state = "multiplayer"
 
             ball = Ball("ball.png", 330, 230, 40, 40, 5)
 
             player_1 = Player1("paddle.png", 30, randint(10, 350), 50, 150, 7)
             player_2 = Player2("paddle.png", 620, randint(10, 350), 50, 150, 7)
+        elif keys_pressed[K_SPACE]:
+            state = "singleplayer"
 
-    elif state == "singleplayer":
+            ball = Ball("ball.png", 330, 230, 40, 40, 5)
+
+            player_bot = Bot("paddle.png", 30, randint(10, 350), 50, 150, 7)
+            player_2 = Player2("paddle.png", 620, randint(10, 350), 50, 150, 7)
+
+    elif state == "multiplayer":
         # render the background
         window.blit(background, (0, 0))
 
@@ -127,11 +142,6 @@ while game:
         player_1.blit_image()
         player_2.blit_image()
 
-        player1_scoretxt = font_2.render("" + str(player1_score), 1, (255, 255, 255))
-        player2_scoretxt = font_2.render("" + str(player2_score), 1, (255, 255, 255))
-
-        window.blit(player1_scoretxt, (290, 80))
-        window.blit(player2_scoretxt, (390, 80))
         # update the sprites
         player_1.update()
         player_2.update()
@@ -152,6 +162,38 @@ while game:
             mixer.Sound.play(score)
             state = "gameover"
     
+    elif state == "singleplayer":
+        # render the background
+        window.blit(background, (0, 0))
+
+        # render the sprites
+        ball.blit_image()
+
+        player_bot.blit_image()
+        player_2.blit_image()
+
+        # update the sprites
+        player_bot.update()
+        player_2.update()
+    
+        ball.update()
+
+        player_bot.rect.y = ball.rect.y - 70
+
+        # detect the collision between the paddles and the ball
+        if sprite.collide_rect(player_bot, ball) or sprite.collide_rect(player_2, ball):
+            ball.speedx *= -1
+            mixer.Sound.play(paddle_hit)
+
+        if ball.rect.x < 1:   
+            won = 4
+            mixer.Sound.play(score)
+            state = "gameover"
+        elif ball.rect.x > 660:
+            won = 3
+            mixer.Sound.play(score)
+            state = "gameover"
+
     elif state == "gameover":
         window.blit(background, (0, 0))
 
@@ -160,6 +202,12 @@ while game:
             window.blit(player1_wins, (170, 180))
         elif won == 2:
             player2_wins = font_1.render("Player 2 Wins", 1, (255, 255, 255))
+            window.blit(player2_wins, (170, 180))
+        elif won == 3:
+            player2_wins = font_1.render("You Lost!", 1, (255, 255, 255))
+            window.blit(player2_wins, (240, 180))
+        elif won == 4:
+            player2_wins = font_1.render("You Won!", 1, (255, 255, 255))
             window.blit(player2_wins, (170, 180))
 
         press_enter = font_1.render("Press Enter", 1, (255, 255, 255))
