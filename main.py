@@ -18,6 +18,7 @@ clock = time.Clock()
 
 # transform.scale the background to the program
 background = transform.scale(image.load("background.jpg"), (700, 500))
+black_background = transform.scale(image.load("black_background.jpg"), (700, 500))
 
 class GameSprite(sprite.Sprite):
     def __init__(self, img, x, y, width, height, speed):
@@ -102,12 +103,9 @@ while game:
         # quit the game
         if e.type == QUIT:
             game = False
-        # if e.type == USEREVENT: 
-        #     ball.speedx += 1
-        #     ball.speedy += 1
             
     if state == "start":
-        window.blit(background, (0, 0))
+        window.blit(black_background, (0, 0))
         start_txt = font_1.render("Ping Pong", 1, (255, 255, 255))
         window.blit(start_txt, (220, 130))
 
@@ -195,7 +193,7 @@ while game:
             state = "gameover"
 
     elif state == "gameover":
-        window.blit(background, (0, 0))
+        window.blit(black_background, (0, 0))
 
         if won == 1:
             player1_wins = font_1.render("Player 1 Wins", 1, (255, 255, 255))
