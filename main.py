@@ -116,7 +116,7 @@ while game:
         window.blit(start_txt, (170, 130))
 
         multi_txt = font_4.render("Press A for Multiplayer", 1, (255, 255, 255))
-        window.blit(multi_txt, (27, 230))
+        window.blit(multi_txt, (35, 230))
 
         multi_txt = font_4.render("Press SPACE for Singleplayer", 1, (255, 255, 255))
         window.blit(multi_txt, (15, 300))
@@ -189,6 +189,16 @@ while game:
             ball.speedx *= -1
             mixer.Sound.play(paddle_hit)
             singleplayer_point += 1
+            if ball.speedx < 0:
+                ball.speedx -= 1
+            else:
+                ball.speedx += 1
+
+            if ball.speedy < 0:
+                ball.speedy -= 1
+            else:
+                ball.speedy += 1
+                
         if sprite.collide_rect(player_2, ball):
             ball.speedx *= -1
             mixer.Sound.play(paddle_hit)
