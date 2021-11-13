@@ -9,9 +9,9 @@ mixer.init()
 # initialize the font class
 font.init()
 
-font_1 = font.Font(None, 80)
-font_2 = font.Font(None, 50)
-font_3 = font.Font(None, 65)
+font_1 = font.Font("font.ttf", 80)
+font_2 = font.Font("font.ttf", 50)
+font_3 = font.Font("font.ttf", 65)
 
 # initialize the clock class
 clock = time.Clock()
@@ -103,6 +103,9 @@ while game:
         # quit the game
         if e.type == QUIT:
             game = False
+        if e.type == KEYDOWN:
+            if e.key == K_ESCAPE:
+                game = False
             
     if state == "start":
         window.blit(black_background, (0, 0))
@@ -197,19 +200,19 @@ while game:
 
         if won == 1:
             player1_wins = font_1.render("Player 1 Wins", 1, (255, 255, 255))
-            window.blit(player1_wins, (170, 180))
+            window.blit(player1_wins, (90, 180))
         elif won == 2:
             player2_wins = font_1.render("Player 2 Wins", 1, (255, 255, 255))
-            window.blit(player2_wins, (170, 180))
+            window.blit(player2_wins, (90, 180))
         elif won == 3:
             player2_wins = font_1.render("You Lost!", 1, (255, 255, 255))
-            window.blit(player2_wins, (240, 180))
+            window.blit(player2_wins, (180, 180))
         elif won == 4:
             player2_wins = font_1.render("You Won!", 1, (255, 255, 255))
-            window.blit(player2_wins, (170, 180))
+            window.blit(player2_wins, (180, 180))
 
         press_enter = font_1.render("Press Enter", 1, (255, 255, 255))
-        window.blit(press_enter, (200, 270))
+        window.blit(press_enter, (115, 270))
         
         if keys_pressed[K_RETURN]:
             state = "start"
